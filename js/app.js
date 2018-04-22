@@ -6,6 +6,8 @@
 
 const deck = document.querySelector(".deck");
 const restart = document.querySelector(".restart");
+const stars = document.querySelectorAll(".stars");
+
 
 // Returns node list for all cards and card images
 const allCards = document.querySelectorAll("li.card");
@@ -17,13 +19,14 @@ const allImagesArray = Array.from(cardImages);
 
 const matchCards = deck.querySelectorAll(".match");
 
+// Moves Counter
 let counter = 0;
+const movesCount = document.querySelector(".moves");
 
 
 function cardClicked (evt) {
     if (evt.target.nodeName === "LI") {
         openCard(evt);
-
     }
 };
 
@@ -40,6 +43,7 @@ function openCard (evt) {
 function checkForMatch (evt) {
     let openCards = deck.querySelectorAll(".open");
     if (openCards.length ===  2) {
+        countingMoves();
         let card1 = openCards[0].querySelector("i").className;
         let card2 = openCards[1].querySelector("i").className;
         if (card1 === card2) {
@@ -51,12 +55,24 @@ function checkForMatch (evt) {
                 openCards[0].classList.remove("open", "show");
                 openCards[1].classList.remove("open", "show");                
             }, 1500);
-            counter += 1;
-            console.log(counter);
         }
     }
 }
 
+function countingMoves() {
+    counter += 1;
+    movesCount.innerHTML = counter;
+    let star = document.querySelector(".fa-star");
+    // TODO: add stars back at restart 
+    switch (counter) {
+        case 1:
+            star.classList.remove("fa-star");
+        case 2:
+            star.classList.remove("fa-star");
+        case 3:
+            star.classList.remove("fa-star");
+    }
+}
 
 /*
  * Display the cards on the page
@@ -83,12 +99,15 @@ function shuffle(array) {
 /* RestartGame function 
  * TODO: update for the real restart
  */
-const restartGame = function() {
-    shuffle(allImagesArray);
+function restartGame() {
+//    shuffle(allImagesArray);
+
     allCards.forEach(function(element) {
-    element.classList.add("show");
-    element.classList.add("open");
-    })
+    element.classList.remove("show", "open", "match");
+    });
+    
+    counter = 0;
+    movesCount.innerHTML = counter;
 };
 
 /*
