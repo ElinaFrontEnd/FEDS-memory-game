@@ -1,6 +1,61 @@
 /*
  * Create a list that holds all of your cards
+ * TODO: review if all definitions are valid and needed
  */
+
+
+const deck = document.querySelector(".deck");
+const restart = document.querySelector(".restart");
+
+// Returns node list for all cards and card images
+const allCards = document.querySelectorAll("li.card");
+const cardImages = deck.querySelectorAll("i");
+// Returns array for card images
+const allImagesArray = Array.from(cardImages);
+
+// Returns node list for all open and match cards
+
+const matchCards = deck.querySelectorAll(".match");
+
+let counter = 0;
+
+
+function cardClicked (evt) {
+    if (evt.target.nodeName === "LI") {
+        openCard(evt);
+
+    }
+};
+
+// Function to open and show the card
+function openCard (evt) {
+    if (deck.querySelectorAll(".open").length < 2) {
+        evt.target.classList.add("open", "show");
+        checkForMatch(evt);
+    };
+};
+
+// Function to check for card match
+// TODO: split between several functions
+function checkForMatch (evt) {
+    let openCards = deck.querySelectorAll(".open");
+    if (openCards.length ===  2) {
+        let card1 = openCards[0].querySelector("i").className;
+        let card2 = openCards[1].querySelector("i").className;
+        if (card1 === card2) {
+            console.log("match!");
+            openCards[0].classList.replace("open", "match");
+            openCards[1].classList.replace("open", "match");
+        } else {
+            setTimeout(function() {
+                openCards[0].classList.remove("open", "show");
+                openCards[1].classList.remove("open", "show");                
+            }, 1500);
+            counter += 1;
+            console.log(counter);
+        }
+    }
+}
 
 
 /*
@@ -25,6 +80,23 @@ function shuffle(array) {
     return array;
 }
 
+/* RestartGame function 
+ * TODO: update for the real restart
+ */
+const restartGame = function() {
+    shuffle(allImagesArray);
+    allCards.forEach(function(element) {
+    element.classList.add("show");
+    element.classList.add("open");
+    })
+};
+
+/*
+ *Event listeners
+ */
+
+deck.addEventListener("click", cardClicked);
+restart.addEventListener("click", restartGame);
 
 /*
  * set up the event listener for a card. If a card is clicked:
