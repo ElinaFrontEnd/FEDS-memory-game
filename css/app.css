@@ -92,10 +92,10 @@ h1 {
 }
 
 .score-panel .stars {
-    margin: 0;
     padding: 0;
     display: inline-block;
     margin: 0 15px 0 0;
+    width: 60px;
 }
 
 .score-panel .stars li {
@@ -112,5 +112,6 @@ h1 {
 #timer {
     display: inline-block;
     margin: 0px 15px 0 5px;
+    width: 120px;
 }
 
