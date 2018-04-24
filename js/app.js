@@ -50,12 +50,13 @@ function gameCompleted() {
 }
 
 function countingMoves() {
-    counter += 1;
+    // Increments moves count by 1
+    counter++;
     movesCount.innerHTML = counter;
     let star = document.querySelector(".fa-star");
     // TODO: add stars back at restart 
     switch (counter) {
-        case 1:
+        case 2:
             star.classList.remove("fa-star");
         case 12:
             star.classList.remove("fa-star");
@@ -90,14 +91,23 @@ function shuffle(array) {
  * TODO: update for the real restart
  */
 function restartGame() {
-//    shuffle(allImagesArray);
+    //  shuffle(allImagesArray);
 
+    // Close all cards
     allCards.forEach(function(element) {
     element.classList.remove("show", "open", "match");
     });
     
+    //Reset counter
     counter = 0;
     movesCount.innerHTML = counter;
+    
+    // reset the stop watch
+    clearTimeout(clearTime); 
+    seconds = 0; minutes = 0; hours = 0;
+    secs = '0' + seconds; mins = '0' + minutes + ': '; hrs = '0' + hours + ': ';
+    let gameTime = document.getElementById("timer");
+    gameTime.innerHTML = "Time: 00:00:00" ;
 };
 
 /*
@@ -106,10 +116,16 @@ function restartGame() {
 
 
 
-// Listens if a card inside a deck is clicked and calls openCard function
+// Listens if a card inside a deck is clicked and calls other functions
 deck.addEventListener("click", function(evt) {
+    // if event target is card in a deck opens card and continues to execute code
     if (evt.target.nodeName === "LI") {
-        openCard(evt);
+        openCard(evt)
+        // if time is equal to 0 starts the timer
+        if ( seconds === 0 && minutes === 0 && hours === 0 ) {
+            startWatch();
+        }
+        // If 2 cards are open increment move count & check for match
         let openCards = deck.querySelectorAll(".open");
         if (openCards.length ===  2) {
             // Increases moves count by 1
@@ -117,7 +133,7 @@ deck.addEventListener("click", function(evt) {
             // Assigns variables to the open cards
             let card1 = openCards[0].querySelector("i").className;
             let card2 = openCards[1].querySelector("i").className;
-            // Validate if cards matchesn
+            // Validate if cards matches
             if (card1 === card2) {
                 cardsMatch(openCards);
             } else {
@@ -126,8 +142,10 @@ deck.addEventListener("click", function(evt) {
         }
     }
     //TODO update length, add popup window
+    // if all cards matches, finish the game
     if (deck.querySelectorAll(".match").length === 2) {
         gameCompleted();
+        stopTime();
     }
 });
                       
@@ -143,3 +161,49 @@ restart.addEventListener("click", restartGame);
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one) - DONE
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
+
+
+
+/*
+ * Timer 
+ * TODO: Review variable names
+ */
+
+// initialize your variables outside the function
+let count = 0;
+let clearTime;
+let seconds = 0, minutes = 0, hours = 0;
+let secs, mins, hrs;
+const gameTime = document.getElementById("timer");
+
+function startWatch( ) {
+    // format how second should look
+    secs = (seconds < 10) ? ('0' + seconds) : (seconds);
+    // if seconds is equal to 60 add +1 to minutes and set seconds to 0
+    if (seconds === 60) {
+        seconds = 0;
+        minutes = minutes + 1;
+    }
+    // format how minutes should look
+    mins = (minutes < 10) ? ('0' + minutes + ':') : (minutes + ':');
+    // if minutes is equal to 60 add +1 to hours and set minutes to 0
+    if ( minutes === 60 ) {
+        minutes = 0;
+        hours = hours + 1;
+    }
+    // format how hours should look
+    hrs = (hours < 10) ? ('0' + hours + ':') : (hours + ':');
+    // display the stopwatch
+    gameTime.innerHTML = 'Time: ' + hrs + mins + secs;
+    // increment seconds by +1 to keep it counting
+    seconds++;
+    // call the setTimeout() to keep the stop watch alive !
+    clearTime = setTimeout("startWatch( )", 1000);
+}
+
+
+//create a function to stop the time
+function stopTime( ) {
+    gameTime.innerHTML = "Game Time: " + hrs + mins + secs;
+    clearTimeout(clearTime); 
+}
