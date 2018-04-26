@@ -1,0 +1,29 @@
+@media screen and (max-width: 620px) {
+    .deck {
+        width: 100%;
+        padding: 3%;
+        height: auto;
+        min-height: unset;
+    }
+    .deck .card {
+        width: 23%;
+        padding-top: 23%;
+        height: 75%;
+        max-height: 23%;
+        margin: 1%;
+    }
+    
+    .deck .card.show {
+        padding: 6.5%;
+    }
+
+    .deck .card.match {
+        padding: 6.5%;
+    }
+    
+    .score-panel {
+        width: 100%;
+        display: inline-block;
+    }
+    
+}

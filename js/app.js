@@ -67,7 +67,7 @@ function countingMoves() {
     movesCount.innerHTML = counter;
     // Removes stars at certain moves counts
     switch (counter) {
-        case 1:
+        case 10:
             starsContainer.querySelector("li").remove();
             break;
         case 18:
@@ -152,7 +152,7 @@ function displayResults() {
     let starsResult = starsContainer.childElementCount;
     let starsText = "You've finished the game with " + starsResult + " stars.";
     let timeResult = document.getElementById("timer").textContent;
-    let timeText = "Your game time is " + timeResult;
+    let timeText = timeResult;
     document.querySelector(".final-stars").textContent = starsText;
     document.querySelector(".game-time").textContent = timeText;
     modal.style.display = "block";   
@@ -192,7 +192,7 @@ deck.addEventListener("click", function(evt) {
     }
     //TODO update length, add popup window
     // if all cards matches, finish the game
-    if (deck.querySelectorAll(".match").length === 2) {
+    if (deck.querySelectorAll(".match").length === 16) {
         gameCompleted();
         stopTime();
         displayResults();
@@ -217,11 +217,6 @@ var btn = document.getElementById("myBtn");
 // Get the <span> element that closes the modal
 var span = document.getElementsByClassName("close")[0];
 
-// When the user clicks the button, open the modal
-// TODO: not needed once implemented
-btn.onclick = function() {
-    displayResults();
-}
 
 // When the user clicks on <span> (x), close the modal
 span.onclick = function() {
