@@ -3,18 +3,18 @@
 ## Table of Contents
 
 * [Instructions](#instructions)
+* [Known Issues](#knownIssues)
 * [Contributing](#contributing)
+
 
 ## Instructions
 
-The starter project has some HTML and CSS styling to display a static version of the Memory Game project. You'll need to convert this project from a static project to an interactive one. This will require modifying the HTML and CSS files, but primarily the JavaScript file.
+Download the repository and open index.html in web broswer to start playing!
 
-To get started, open `js/app.js` and start building out the app's functionality
+## Known Issues
 
-For specific, detailed instructions, look at the project instructions in the [Udacity Classroom](https://classroom.udacity.com/me).
+Moves counter is incremented by 1 whenever 2 cards are open and another cards are clicked
 
 ## Contributing
 
-This repository is the starter code for _all_ Udacity students. Therefore, we most likely will not accept pull requests.
-
-For details, check out [CONTRIBUTING.md](CONTRIBUTING.md).
+This repository is the project for Google FEDS. Therefore, most likely I will not accept pull requests, but I'm open for suggestions.

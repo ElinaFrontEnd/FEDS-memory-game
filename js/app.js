@@ -1,30 +1,16 @@
 /*
- * Define variables
- * TODO: review if all definitions are valid and needed
+ * Cards
  */
 
-// 
 const deck = document.querySelector(".deck");
 const restart = document.querySelector(".restart");
 const starsContainer = document.querySelector(".stars");
 const star = document.querySelector(".star");
-
-// Returns node list for all cards and card images
 const allCards = document.querySelectorAll("li.card");
-const cardImages = deck.querySelectorAll("i");
-// Returns array for card images
-const allImagesArray = Array.from(cardImages);
-
-// Returns node list for all open and match cards
-const matchCards = deck.querySelectorAll(".match");
 
 // Moves Counter
 let counter = 0;
-const movesCount = document.querySelector(".moves");
-
-// 
-const htmlTextToAdd = "<li class=\"star\"><i class=\"fa fa-star\"></i></li>";
-
+const movesCounter = document.querySelector(".moves");
 
 
 // Shuffles node list
@@ -34,6 +20,7 @@ function shuffle() {
         list.appendChild(list.children[Math.random() * i | 0]);
     }    
 }
+
 // Display card
 function openCard (evt) {
     // validates if no more than 2 cards are open at the same time
@@ -41,7 +28,7 @@ function openCard (evt) {
         // opens the card
         evt.target.classList.add("open", "show");
     };
-};
+}
 
 // if cards match change their class
 function cardsMatch(openCards) {
@@ -57,14 +44,11 @@ function cardsDontMatch(openCards) {
     }, 1500);
 }
 
-function gameCompleted() {
-    console.log("All Cards Opened");
-}
-
+// TODO: fix bug which increments counter if a card is clicked while 2 other cards are open
 function countingMoves() {
     // Increments moves count by 1
     counter++;
-    movesCount.innerHTML = counter;
+    movesCounter.innerHTML = counter;
     // Removes stars at certain moves counts
     switch (counter) {
         case 10:
@@ -79,10 +63,7 @@ function countingMoves() {
     }
 }
 
-/* 
- * Restart the game
- */
-
+// Restart game
 function restartGame() {
     // Shuffle the game
     shuffle();
@@ -92,7 +73,7 @@ function restartGame() {
     });
     //Reset counter
     counter = 0;
-    movesCount.innerHTML = counter;
+    movesCounter.innerHTML = counter;
     // Reset the stop watch
     clearTimeout(clearTime); 
     seconds = 0; minutes = 0; hours = 0;
@@ -100,16 +81,28 @@ function restartGame() {
     let gameTime = document.getElementById("timer");
     gameTime.innerHTML = "Time: 00:00:00" ;
     // Reset stars count
+    const htmlTextToAdd = "<li class=\"star\"><i class=\"fa fa-star\"></i></li>";
     while (starsContainer.childElementCount < 3) {
         starsContainer.insertAdjacentHTML("afterbegin", htmlTextToAdd);       
     }
 };
 
+// When all cards are opened and matces, display stars and time result
+function displayResults() {
+    let starsResult = starsContainer.childElementCount;
+    let starsText = "You've finished the game with " + starsResult + " stars.";
+    let timeResult = document.getElementById("timer").textContent;
+    let timeText = timeResult;
+    document.querySelector(".final-stars").textContent = starsText;
+    document.querySelector(".game-time").textContent = timeText;
+    modal.style.display = "block";   
+}
+
 /*
- * Timer 
+ * Timer
  */
 
-// initialize your variables outside the function
+// initialize timer variables
 let count = 0;
 let clearTime;
 let seconds = 0, minutes = 0, hours = 0;
@@ -146,16 +139,6 @@ function stopTime( ) {
     // Keep if different message needs to be kept
     gameTime.innerHTML = "Time: " + hrs + mins + secs;
     clearTimeout(clearTime); 
-}
-
-function displayResults() {
-    let starsResult = starsContainer.childElementCount;
-    let starsText = "You've finished the game with " + starsResult + " stars.";
-    let timeResult = document.getElementById("timer").textContent;
-    let timeText = timeResult;
-    document.querySelector(".final-stars").textContent = starsText;
-    document.querySelector(".game-time").textContent = timeText;
-    modal.style.display = "block";   
 }
 
 /*
