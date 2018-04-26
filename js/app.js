@@ -176,7 +176,6 @@ deck.addEventListener("click", function(evt) {
     //TODO update length, add popup window
     // if all cards matches, finish the game
     if (deck.querySelectorAll(".match").length === 16) {
-        gameCompleted();
         stopTime();
         displayResults();
     }
