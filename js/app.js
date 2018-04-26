@@ -67,7 +67,7 @@ function countingMoves() {
     movesCount.innerHTML = counter;
     // Removes stars at certain moves counts
     switch (counter) {
-        case 10:
+        case 1:
             starsContainer.querySelector("li").remove();
             break;
         case 18:
@@ -84,7 +84,6 @@ function countingMoves() {
  */
 
 function restartGame() {
-    window.prompt("sometext","defaultText");
     // Shuffle the game
     shuffle();
     // Close all cards
@@ -103,7 +102,7 @@ function restartGame() {
     // Reset stars count
     while (starsContainer.childElementCount < 3) {
         starsContainer.insertAdjacentHTML("afterbegin", htmlTextToAdd);       
-    } 
+    }
 };
 
 /*
@@ -149,6 +148,15 @@ function stopTime( ) {
     clearTimeout(clearTime); 
 }
 
+function displayResults() {
+    let starsResult = starsContainer.childElementCount;
+    let starsText = "You've finished the game with " + starsResult + " stars.";
+    let timeResult = document.getElementById("timer").textContent;
+    let timeText = "Your game time is " + timeResult;
+    document.querySelector(".final-stars").textContent = starsText;
+    document.querySelector(".game-time").textContent = timeText;
+    modal.style.display = "block";   
+}
 
 /*
  *Event listeners and default functions
@@ -184,11 +192,45 @@ deck.addEventListener("click", function(evt) {
     }
     //TODO update length, add popup window
     // if all cards matches, finish the game
-    if (deck.querySelectorAll(".match").length === 16) {
+    if (deck.querySelectorAll(".match").length === 2) {
         gameCompleted();
         stopTime();
+        displayResults();
     }
 });
 
 // Restarts the game when restart button clicked
 restart.addEventListener("click", restartGame);
+
+
+/*
+ * MODAL
+ */
+
+// Get the modal
+var modal = document.getElementById('myModal');
+
+// Get the button that opens the modal
+// TODO: not needed once implemented
+var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal
+// TODO: not needed once implemented
+btn.onclick = function() {
+    displayResults();
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
