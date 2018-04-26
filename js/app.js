@@ -26,6 +26,14 @@ const movesCount = document.querySelector(".moves");
 const htmlTextToAdd = "<li class=\"star\"><i class=\"fa fa-star\"></i></li>";
 
 
+
+// Shuffles node list
+function shuffle() {
+    var list = document.querySelector('.deck'), i;
+    for (i = list.children.length; i >= 0; i--) {
+        list.appendChild(list.children[Math.random() * i | 0]);
+    }    
+}
 // Display card
 function openCard (evt) {
     // validates if no more than 2 cards are open at the same time
@@ -53,7 +61,6 @@ function gameCompleted() {
     console.log("All Cards Opened");
 }
 
-
 function countingMoves() {
     // Increments moves count by 1
     counter++;
@@ -72,96 +79,32 @@ function countingMoves() {
     }
 }
 
-/*
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page
- */
-
-// Shuffle function from http://stackoverflow.com/a/2450976
-function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
-
-    while (currentIndex !== 0) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
-    }
-
-    return array;
-}
-
 /* 
  * Restart the game
  */
-function restartGame() {
-    // TODO: shuffle(allImagesArray);
 
+function restartGame() {
+    window.prompt("sometext","defaultText");
+    // Shuffle the game
+    shuffle();
     // Close all cards
     allCards.forEach(function(element) {
     element.classList.remove("show", "open", "match");
     });
-    
     //Reset counter
     counter = 0;
     movesCount.innerHTML = counter;
-    
     // Reset the stop watch
     clearTimeout(clearTime); 
     seconds = 0; minutes = 0; hours = 0;
     secs = '0' + seconds; mins = '0' + minutes + ': '; hrs = '0' + hours + ': ';
     let gameTime = document.getElementById("timer");
     gameTime.innerHTML = "Time: 00:00:00" ;
-    
     // Reset stars count
     while (starsContainer.childElementCount < 3) {
         starsContainer.insertAdjacentHTML("afterbegin", htmlTextToAdd);       
-    }
-    
+    } 
 };
-
-/*
- *Event listeners
- */
-
-// Listens if a card inside a deck is clicked and calls other functions
-deck.addEventListener("click", function(evt) {
-    // if event target is card in a deck opens card and continues to execute code
-    if (evt.target.nodeName === "LI") {
-        openCard(evt)
-        // if time is equal to 0 starts the timer
-        if ( seconds === 0 && minutes === 0 && hours === 0 ) {
-            startTime();
-        }
-        // If 2 cards are open increment move count & check for match
-        let openCards = deck.querySelectorAll(".open");
-        if (openCards.length ===  2) {
-            // Increases moves count by 1
-            countingMoves();
-            // Assigns variables to the open cards
-            let card1 = openCards[0].querySelector("i").className;
-            let card2 = openCards[1].querySelector("i").className;
-            // Validate if cards matches
-            if (card1 === card2) {
-                cardsMatch(openCards);
-            } else {
-                cardsDontMatch(openCards);
-            }
-        }
-    }
-    //TODO update length, add popup window
-    // if all cards matches, finish the game
-    if (deck.querySelectorAll(".match").length === 2) {
-        gameCompleted();
-        stopTime();
-    }
-});
-                      
-restart.addEventListener("click", restartGame);
-
 
 /*
  * Timer 
@@ -199,10 +142,53 @@ function startTime( ) {
     clearTime = setTimeout("startTime( )", 1000);
 }
 
-
-//create a function to stop the time
+// function to stop the time
 function stopTime( ) {
     // Keep if different message needs to be kept
     gameTime.innerHTML = "Time: " + hrs + mins + secs;
     clearTimeout(clearTime); 
 }
+
+
+/*
+ *Event listeners and default functions
+ */
+
+// Call shuffle function
+shuffle();
+
+// Listens if a card inside a deck is clicked and calls other functions
+deck.addEventListener("click", function(evt) {
+    // if event target is card in a deck opens card and continues to execute code
+    if (evt.target.nodeName === "LI") {
+        openCard(evt)
+        // if time is equal to 0 starts the timer
+        if ( seconds === 0 && minutes === 0 && hours === 0 ) {
+            startTime();
+        }
+        // If 2 cards are open increment move count & check for match
+        let openCards = deck.querySelectorAll(".open");
+        if (openCards.length ===  2) {
+            // Increases moves count by 1
+            countingMoves();
+            // Assigns variables to the open cards
+            let card1 = openCards[0].querySelector("i").className;
+            let card2 = openCards[1].querySelector("i").className;
+            // Validate if cards matches
+            if (card1 === card2) {
+                cardsMatch(openCards);
+            } else {
+                cardsDontMatch(openCards);
+            }
+        }
+    }
+    //TODO update length, add popup window
+    // if all cards matches, finish the game
+    if (deck.querySelectorAll(".match").length === 16) {
+        gameCompleted();
+        stopTime();
+    }
+});
+
+// Restarts the game when restart button clicked
+restart.addEventListener("click", restartGame);
