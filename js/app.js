@@ -1,3 +1,4 @@
+"use strict";
 /*
  * Cards
  */
@@ -5,20 +6,28 @@
 const deck = document.querySelector(".deck");
 const restart = document.querySelector(".restart");
 const starsContainer = document.querySelector(".stars");
-const star = document.querySelector(".star");
 const allCards = document.querySelectorAll("li.card");
 
 // Moves Counter
 let counter = 0;
 const movesCounter = document.querySelector(".moves");
 
+// initialize timer variables
+let clearTime;
+let seconds = 0;
+let minutes = 0;
+let hours = 0;
+let secs;
+let mins;
+let hrs;
+const gameTime = document.getElementById("timer");
 
 // Shuffles node list
 function shuffle() {
-    var list = document.querySelector('.deck'), i;
-    for (i = list.children.length; i >= 0; i--) {
-        list.appendChild(list.children[Math.random() * i | 0]);
-    }    
+    let i;
+    for (i = deck.children.length; i >= 0; i--) {
+        deck.appendChild(deck.children[Math.random() * i | 0]);
+    }
 }
 
 // Display card
@@ -27,24 +36,24 @@ function openCard (evt) {
     if (deck.querySelectorAll(".open").length < 2) {
         // opens the card
         evt.target.classList.add("open", "show");
-    };
+    }
 }
 
 // if cards match change their class
 function cardsMatch(openCards) {
     openCards[0].classList.replace("open", "match");
-    openCards[1].classList.replace("open", "match")
+    openCards[1].classList.replace("open", "match");
 }
 
 // If cards don't match close them after timeout
 function cardsDontMatch(openCards) {
     setTimeout(function() {
         openCards[0].classList.remove("open", "show");
-        openCards[1].classList.remove("open", "show");                
+        openCards[1].classList.remove("open", "show");
     }, 1500);
 }
 
-// TODO: fix bug which increments counter if a card is clicked while 2 other cards are open
+// Increments counter by 1
 function countingMoves() {
     // Increments moves count by 1
     counter++;
@@ -75,17 +84,16 @@ function restartGame() {
     counter = 0;
     movesCounter.innerHTML = counter;
     // Reset the stop watch
-    clearTimeout(clearTime); 
+    clearTimeout(clearTime);
     seconds = 0; minutes = 0; hours = 0;
-    secs = '0' + seconds; mins = '0' + minutes + ': '; hrs = '0' + hours + ': ';
-    let gameTime = document.getElementById("timer");
-    gameTime.innerHTML = "Time: 00:00:00" ;
+    secs = "0" + seconds; mins = "0" + minutes + ": "; hrs = "0" + hours + ": ";
+    gameTime.innerHTML = "Time: 00:00:00";
     // Reset stars count
     const htmlTextToAdd = "<li class=\"star\"><i class=\"fa fa-star\"></i></li>";
     while (starsContainer.childElementCount < 3) {
-        starsContainer.insertAdjacentHTML("afterbegin", htmlTextToAdd);       
+        starsContainer.insertAdjacentHTML("afterbegin", htmlTextToAdd);
     }
-};
+}
 
 // When all cards are opened and matces, display stars and time result
 function displayResults() {
@@ -95,50 +103,43 @@ function displayResults() {
     let timeText = timeResult;
     document.querySelector(".final-stars").textContent = starsText;
     document.querySelector(".game-time").textContent = timeText;
-    modal.style.display = "block";   
+    modal.style.display = "block";
 }
 
 /*
  * Timer
  */
 
-// initialize timer variables
-let count = 0;
-let clearTime;
-let seconds = 0, minutes = 0, hours = 0;
-let secs, mins, hrs;
-const gameTime = document.getElementById("timer");
-
 function startTime( ) {
     // format how second should look
-    secs = (seconds < 10) ? ('0' + seconds) : (seconds);
+    secs = (seconds < 10) ? ("0" + seconds) : (seconds);
     // if seconds is equal to 60 add +1 to minutes and set seconds to 0
     if (seconds === 60) {
         seconds = 0;
         minutes = minutes + 1;
     }
     // format how minutes should look
-    mins = (minutes < 10) ? ('0' + minutes + ':') : (minutes + ':');
+    mins = (minutes < 10) ? ("0" + minutes + ":") : (minutes + ":");
     // if minutes is equal to 60 add +1 to hours and set minutes to 0
     if ( minutes === 60 ) {
         minutes = 0;
         hours = hours + 1;
     }
     // format how hours should look
-    hrs = (hours < 10) ? ('0' + hours + ':') : (hours + ':');
+    hrs = (hours < 10) ? ("0" + hours + ":") : (hours + ":");
     // display the stopwatch
-    gameTime.innerHTML = 'Time: ' + hrs + mins + secs;
+    gameTime.innerHTML = "Time: " + hrs + mins + secs;
     // increment seconds by +1 to keep it counting
-    seconds++;
+    seconds = seconds + 1;
     // call the setTimeout() to keep the stop watch alive !
-    clearTime = setTimeout("startTime( )", 1000);
+    clearTime = setTimeout("startTime()", 1000);
 }
 
 // function to stop the time
 function stopTime( ) {
     // Keep if different message needs to be kept
     gameTime.innerHTML = "Time: " + hrs + mins + secs;
-    clearTimeout(clearTime); 
+    clearTimeout(clearTime);
 }
 
 /*
@@ -152,7 +153,7 @@ shuffle();
 deck.addEventListener("click", function(evt) {
     // if event target is card in a deck opens card and continues to execute code
     if (evt.target.nodeName === "LI") {
-        openCard(evt)
+        openCard(evt);
         // if time is equal to 0 starts the timer
         if ( seconds === 0 && minutes === 0 && hours === 0 ) {
             startTime();
@@ -173,7 +174,6 @@ deck.addEventListener("click", function(evt) {
             }
         }
     }
-    //TODO update length, add popup window
     // if all cards matches, finish the game
     if (deck.querySelectorAll(".match").length === 16) {
         stopTime();
@@ -190,24 +190,20 @@ restart.addEventListener("click", restartGame);
  */
 
 // Get the modal
-var modal = document.getElementById('myModal');
-
-// Get the button that opens the modal
-// TODO: not needed once implemented
-var btn = document.getElementById("myBtn");
+const modal = document.getElementById("myModal");
 
 // Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
+const span = document.getElementsByClassName("close")[0];
 
 
 // When the user clicks on <span> (x), close the modal
 span.onclick = function() {
     modal.style.display = "none";
-}
+};
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
     if (event.target == modal) {
         modal.style.display = "none";
     }
-}
+};
