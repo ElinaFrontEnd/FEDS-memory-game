@@ -11,6 +11,7 @@ const allCards = document.querySelectorAll("li.card");
 // Moves Counter
 let counter = 0;
 const movesCounter = document.querySelector(".moves");
+let disableClick = true;
 
 // initialize timer variables
 let clearTime;
@@ -50,6 +51,7 @@ function cardsDontMatch(openCards) {
     setTimeout(function() {
         openCards[0].classList.remove("open", "show");
         openCards[1].classList.remove("open", "show");
+        disableClick = true;
     }, 1500);
 }
 
@@ -160,7 +162,7 @@ deck.addEventListener("click", function(evt) {
         }
         // If 2 cards are open increment move count & check for match
         let openCards = deck.querySelectorAll(".open");
-        if (openCards.length ===  2) {
+        if (openCards.length ===  2 && disableClick) {
             // Increases moves count by 1
             countingMoves();
             // Assigns variables to the open cards
@@ -170,6 +172,7 @@ deck.addEventListener("click", function(evt) {
             if (card1 === card2) {
                 cardsMatch(openCards);
             } else {
+                disableClick = false;
                 cardsDontMatch(openCards);
             }
         }
