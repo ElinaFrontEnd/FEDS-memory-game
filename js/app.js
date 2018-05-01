@@ -97,11 +97,9 @@ function restartGame() {
 // When all cards are opened and matces, display stars and time result
 function displayResults() {
     let starsResult = starsContainer.childElementCount;
-    let starsText = "You've finished the game with " + starsResult + " stars.";
     let timeResult = document.getElementById("timer").textContent;
-    let timeText = timeResult;
-    document.querySelector(".final-stars").textContent = starsText;
-    document.querySelector(".game-time").textContent = timeText;
+    let resultsText = "You've finished the game with rating of " + starsResult + " stars. " + timeResult;
+    document.querySelector(".results").textContent = resultsText;
     modal.style.display = "block";
 }
 
@@ -195,6 +193,8 @@ const modal = document.getElementById("myModal");
 // Get the <span> element that closes the modal
 const span = document.getElementsByClassName("close")[0];
 
+// Get the restart button from the modal
+const playAgain = document.querySelector(".play-again");
 
 // When the user clicks on <span> (x), close the modal
 span.onclick = function() {
@@ -207,3 +207,9 @@ window.onclick = function(event) {
         modal.style.display = "none";
     }
 };
+
+// When the user clicks on restart button in modal, restart the game and close the modal
+playAgain.addEventListener("click", function() {
+    modal.style.display = "none";
+    restartGame();
+})
