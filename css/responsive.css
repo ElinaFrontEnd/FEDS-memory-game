@@ -1,16 +1,13 @@
 @media screen and (max-width: 620px) {
     .deck {
-        width: 100%;
+        width: 100vw;
         padding: 3%;
         height: auto;
-        min-height: unset;
+        min-height: 100vw;
     }
     .deck .card {
-        width: 23%;
-        padding-top: 23%;
-        height: 75%;
-        max-height: 23%;
-        margin: 1%;
+        width: 20vw;
+        height: 20vw;
     }
     
     .deck .card.show {
