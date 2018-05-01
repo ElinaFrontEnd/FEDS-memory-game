@@ -62,7 +62,7 @@ function countingMoves() {
     movesCounter.innerHTML = counter;
     // Removes stars at certain moves counts
     switch (counter) {
-        case 12:
+        case 13:
             starsContainer.querySelector("li").remove();
             break;
         case 18:
